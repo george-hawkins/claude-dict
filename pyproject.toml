@@ -1,0 +1,19 @@
+[project]
+name = "claude-dict"
+version = "0.1.0"
+description = "Command-line spelling, synonym and meaning lookup powered by Claude"
+requires-python = ">=3.14"
+dependencies = [
+    "anthropic>=1.13.0",
+]
+
+[project.scripts]
+claude-dict = "claude_dict.cli:main"
+
+[build-system]
+requires = ["uv_build>=0.11,<0.12"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "claude_dict"
+module-root = ""
