@@ -113,12 +113,19 @@ def latest_sonnet(client: anthropic.Anthropic) -> str:
 
 
 def ask(client: anthropic.Anthropic, model: str, prompt: str) -> str:
+    # Dictionary lookups need no reasoning: turn thinking off and use low
+    # effort for the fastest, tersest answers. Thinking tokens would otherwise
+    # count against max_tokens and could truncate the visible answer.
     response = client.messages.create(
         model=model,
-        max_tokens=300,
+        max_tokens=1000,
+        thinking={"type": "between_tools"},
+        output_config={"effort": "low"},
         system=SYSTEM,
         messages=[{"role": "user", "content": prompt}],
     )
+    if response.stop_reason == "max_tokens":
+        print("warning: answer was cut off by the token limit", file=sys.stderr)
     return "".join(b.text for b in response.content if b.type == "text").strip()
 
 
