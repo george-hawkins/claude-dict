@@ -30,13 +30,21 @@ PROMPTS = {
     "synonym": (
         "List synonyms for: {word}\n\n"
         "Reply with a single comma-separated list of at most eight of the most common synonyms, "
-        "most common first. No numbering, no explanations."
+        "most common first. No numbering, no explanations. If the word has more than "
+        "one common sense, give synonyms for the most common one unless a sense is "
+        "specified below."
     ),
     "meaning": (
         "Give the meaning of: {word}\n\n"
         "Reply with one clear, concise sentence. If there is more than one common "
         "meaning, give only the most common one unless a sense is specified below."
     ),
+}
+
+# Commands that accept a trailing "(guide)" to pick one sense of the word.
+GUIDES = {
+    "synonym": "Only give synonyms for the sense relating to: {guide}",
+    "meaning": "Only give the sense relating to: {guide}",
 }
 
 COMMANDS = tuple(PROMPTS)
@@ -66,7 +74,7 @@ def parse(line: str) -> tuple[str, str, str | None] | None:
         return None
     rest = parts[1].strip() if len(parts) > 1 else ""
     guide = None
-    if command == "meaning":
+    if command in GUIDES:
         m = GUIDE_RE.search(rest)
         if m:
             guide = m.group(1).strip() or None
@@ -77,7 +85,7 @@ def parse(line: str) -> tuple[str, str, str | None] | None:
 def build_prompt(command: str, word: str, guide: str | None) -> str:
     prompt = PROMPTS[command].format(word=word)
     if guide:
-        prompt += f"\n\nOnly give the sense relating to: {guide}"
+        prompt += "\n\n" + GUIDES[command].format(guide=guide)
     return prompt
 
 
@@ -133,7 +141,7 @@ def usage() -> str:
     return (
         "Commands (any unique prefix works, e.g. sp, sy, m):\n"
         "  spell <word>              most likely correct spelling\n"
-        "  synonym <word>            list synonyms\n"
+        "  synonym <word> [(guide)]  list synonyms, optionally for one sense\n"
         "  meaning <word> [(guide)]  concise meaning, optionally for one sense\n"
         "  quit                      exit (or Ctrl-D)"
     )

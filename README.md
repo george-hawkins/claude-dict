@@ -12,6 +12,8 @@ correct
 British spelling; American: color
 > sy happy
 cheerful, glad, joyful, content, pleased, delighted, merry, elated
+> sy humanity (qualities that make us human)
+compassion, kindness, benevolence, mercy, empathy, humaneness, sympathy, tenderness
 > m bank (money)
 A financial institution that accepts deposits, lends money and provides other financial services.
 > m kick the bucket
@@ -23,8 +25,8 @@ To die.
 | Command   | What it does                                                                                              |
 |-----------|-----------------------------------------------------------------------------------------------------------|
 | `spell`   | Gives the most likely correct spelling, or `correct` if it is already right. If the word is a British spelling with a different American spelling, it says so and gives the American form. |
-| `synonym` | Lists up to eight synonyms, most common first.                                                                     |
-| `meaning` | Gives a clear, concise one-sentence meaning.                                                              |
+| `synonym` | Lists up to eight synonyms, most common first. Takes an optional `(guide)` to pick one sense.                      |
+| `meaning` | Gives a clear, concise one-sentence meaning. Takes an optional `(guide)` to pick one sense.               |
 | `quit`    | Exits. `exit` or Ctrl-D also work.                                                                        |
 
 Any unique prefix of a command works: `m` for `meaning`, `sp` for `spell`, `sy` for `synonym`.
@@ -32,8 +34,8 @@ Plain `s` is ambiguous and prints the help text.
 
 Multiple words after the command are treated as a single phrase, so `m kick the bucket` looks up the idiom.
 
-For `meaning`, you can narrow the sense with a guide in parentheses at the end of the line,
-for example `m bank (river)` or `m lead (metal)`.
+For `meaning` and `synonym`, you can narrow the sense with a guide in parentheses at the end of the line,
+for example `m bank (river)`, `m lead (metal)` or `sy humanity (qualities that make us human)`.
 
 ## Setup
 
